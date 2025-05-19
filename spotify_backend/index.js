@@ -11,6 +11,7 @@ const ExtractJwt = require("passport-jwt").ExtractJwt;
 const User = require("./models/User");
 const authRoutes = require("./routes/auth");
 const songRoutes = require("./routes/song");
+const playlistRoutes = require("./routes/playlist");
 
 app.use(express.json());
 app.use(passport.initialize());
