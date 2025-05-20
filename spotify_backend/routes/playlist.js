@@ -72,7 +72,7 @@ router.post(
     }
     //check if the current user owns the playlist or is a collaborators
     if (
-      playlist.owner != currentUser._id &&
+      !playlist.owner.equals(currentUser._id) &&
       !playlist.collaborators.includes(currentUser._id)
     ) {
       return res.status(400).json({ err: "Not Allowed" });
