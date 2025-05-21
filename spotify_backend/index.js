@@ -7,12 +7,14 @@ const mongoose = require("mongoose");
 const passport = require("passport");
 const JwtStrategy = require("passport-jwt").Strategy;
 const ExtractJwt = require("passport-jwt").ExtractJwt;
-
+const cors = require("cors");
 const User = require("./models/User");
 const authRoutes = require("./routes/auth");
 const songRoutes = require("./routes/song");
 const playlistRoutes = require("./routes/playlist");
 
+
+app.use(cors());
 app.use(express.json());
 app.use(passport.initialize());
 
