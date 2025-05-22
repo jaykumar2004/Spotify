@@ -13,14 +13,16 @@ const authRoutes = require("./routes/auth");
 const songRoutes = require("./routes/song");
 const playlistRoutes = require("./routes/playlist");
 
-
 app.use(cors());
 app.use(express.json());
 app.use(passport.initialize());
 
 // MongoDB Connection
 mongoose
-  .connect(process.env.MONGO_URI || "mongodb+srv://jangidkumarjay:Jaykumar%402004@cluster0.z50shwk.mongodb.net")
+  .connect(
+    process.env.MONGO_URI ||
+      "mongodb+srv://jangidkumarjay:Jaykumar%402004@cluster0.z50shwk.mongodb.net"
+  )
   .then(() => console.log("Database Connection established"))
   .catch((err) => console.log("Error connecting to database", err));
 
@@ -31,17 +33,19 @@ const opts = {
 };
 
 passport.use(
-  new JwtStrategy(opts, async (jwt_payload, done) => {
-    try {
-      const user = await User.findById(jwt_payload.sub); // ✅ async/await, use `sub`
+  new JwtStrategy(opts, function (jwt_payload, done) {
+    User.findOne({ _id: jwt_payload.identifier }, function (err, user) {
+      // done(error, doesTheUserExist)
+      if (err) {
+        return done(err, false);
+      }
       if (user) {
         return done(null, user);
       } else {
         return done(null, false);
+        // or you could create a new account
       }
-    } catch (err) {
-      return done(err, false);
-    }
+    });
   })
 );
 
@@ -52,7 +56,7 @@ app.get("/", (req, res) => {
 
 app.use("/auth", authRoutes);
 app.use("/song", songRoutes);
-app.use("/playlist",playlistRoutes)
+app.use("/playlist", playlistRoutes);
 
 app.listen(port, () => {
   console.log("App is listening on port: " + port);

@@ -13,13 +13,25 @@ import songContext from "./contexts/songContext";
 function App() {
   const [currentSong, setCurrentSong] = useState(null);
   const [cookie, setCookie] = useCookies(["token"]);
+
+  const [soundPlayed, setSoundPlayed] = useState(null);
+  const [isPaused, setIsPaused] = useState(true);
   return (
     <div className="w-screen h-screen font-Nunito">
       <BrowserRouter>
         {cookie.token ? (
           //logged in routes
 
-          <songContext.Provider value={{ currentSong, setCurrentSong }}>
+          <songContext.Provider
+            value={{
+              currentSong,
+              setCurrentSong,
+              soundPlayed,
+              setSoundPlayed,
+              isPaused,
+              setIsPaused,
+            }}
+          >
             <Routes>
               <Route path="/" element={<HelloComponent />} />
               <Route path="/home" element={<LoggedInHomeComponent />} />
